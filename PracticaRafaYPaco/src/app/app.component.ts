@@ -6,9 +6,9 @@ import { UserService } from './user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent{
   title = 'PracticaRafaYPaco';
-  users: any[] =[];
+  users;
 
 
 
@@ -20,13 +20,20 @@ constructor(
 ngOnInit() {
   this.userService.getAutores()
   .subscribe(
+    
     (data) => { // Success
-      this.users = data['results'];
-    },
-    (error) => {
-      console.error(error);
+      console.log(data);
+      this.users = data; 
+         
     }
   );
+
+
+
+
+console.log();
+
+  
 }
 }
 

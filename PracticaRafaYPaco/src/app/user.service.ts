@@ -9,10 +9,7 @@ export class UserService {
   constructor(protected http: HttpClient) { }
 
   getAutores(){
-    return this.http.get('localhost/bibliotecagnommo/authors');
-  }
-
-  getAutor(id){
-    return this.http.get('localhost/bibliotecagnommo/author/'+id);
+    console.log("ha llegado");
+    return this.http.get('http://localhost:3000/authors');
   }
 }
