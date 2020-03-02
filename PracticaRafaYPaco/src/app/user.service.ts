@@ -12,4 +12,9 @@ export class UserService {
     console.log("ha llegado");
     return this.http.get('http://localhost:3000/authors');
   }
+
+  getLibros(){
+    console.log("ha llegado");
+    return this.http.get('http://localhost:3000/books');
+  }
 }

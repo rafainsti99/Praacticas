@@ -7,9 +7,9 @@ import { UserService } from './user.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent{
-  title = 'PracticaRafaYPaco';
-  users;
-
+  title = 'Biblioteca de Rafa y Paco';
+  autores;
+  libros;
 
 
 constructor(
@@ -23,15 +23,20 @@ ngOnInit() {
     
     (data) => { // Success
       console.log(data);
-      this.users = data; 
+      this.autores = data; 
          
     }
   );
 
-
-
-
-console.log();
+  this.userService.getLibros()
+  .subscribe(
+    
+    (data) => { // Success
+      console.log(data);
+      this.libros = data; 
+         
+    }
+  );
 
   
 }

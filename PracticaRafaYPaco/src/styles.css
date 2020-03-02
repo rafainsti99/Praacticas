@@ -1,9 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
-body{
-    text-align: center;
+#principal{
+    display: flex;
+    margin-left: 40%;
+    margin-top: 2%;
 }
 
-form{
+.autores,.libros{
+text-align: center;
 
-    margin-top: 10px;
+}
+
+.libros{
+    margin-left: 20%;
+}
+
+input,select{
+    display: block;
+}
+
+#formularios{
+
+    display: flex;
+}
+
+#formularioLibros{
+
+    margin-left: 55%;
+}
+
+#formularioAutores{
+
+    margin-left: 12%;
 }
