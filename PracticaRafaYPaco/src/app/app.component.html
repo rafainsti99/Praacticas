@@ -12,17 +12,14 @@
   <div>
     <h1>Autores</h1>
     <div class="autores" *ngFor='let autor of autores'>
-        <p>{{ autor["firstName"] }}</p>
-        <p>{{ autor["lastName"] }}</p>
+        <p>{{ autor["firstName"] }} {{ autor["lastName"] }}</p>
     </div>
 </div>
 
   <div class="libros">
     <h1>Libros</h1>
     <div *ngFor='let libro of libros'>
-      <p>{{ libro["name"] }}</p>
-      <p>{{ libro["isbn"] }}</p>
-      <p>{{ libro["author"] }}</p>
+      <p>Título: {{ libro["name"] }}  ISBN: {{ libro["isbn"] }}</p>
     </div>
 </div>
 </div>
