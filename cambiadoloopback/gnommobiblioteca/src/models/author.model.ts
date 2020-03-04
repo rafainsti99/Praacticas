@@ -8,7 +8,7 @@ export class Author extends Entity {
     generated: false,
     required: true,
   })
-  dni: string;
+  id: string;
 
   @property({
     type: 'string',
@@ -21,12 +21,6 @@ export class Author extends Entity {
     required: true,
   })
   lastName: string;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
-  id: number;
 
 
   constructor(data?: Partial<Author>) {
