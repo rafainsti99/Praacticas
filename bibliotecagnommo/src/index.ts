@@ -1,10 +1,10 @@
-import {BibliotecagnommoApplication} from './application';
+import {GnommobibliotecaApplication} from './application';
 import {ApplicationConfig} from '@loopback/core';
 
-export {BibliotecagnommoApplication};
+export {GnommobibliotecaApplication};
 
 export async function main(options: ApplicationConfig = {}) {
-  const app = new BibliotecagnommoApplication(options);
+  const app = new GnommobibliotecaApplication(options);
   await app.boot();
   await app.start();
 

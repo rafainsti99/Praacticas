@@ -120,7 +120,7 @@ export class BookController {
     },
   })
   async findById(
-    @param.path.string('id') id: string,
+    @param.path.number('id') id: number,
     @param.query.object('filter', getFilterSchemaFor(Book)) filter?: Filter<Book>
   ): Promise<Book> {
     return this.bookRepository.findById(id, filter);
@@ -134,7 +134,7 @@ export class BookController {
     },
   })
   async updateById(
-    @param.path.string('id') id: string,
+    @param.path.number('id') id: number,
     @requestBody({
       content: {
         'application/json': {
@@ -155,7 +155,7 @@ export class BookController {
     },
   })
   async replaceById(
-    @param.path.string('id') id: string,
+    @param.path.number('id') id: number,
     @requestBody() book: Book,
   ): Promise<void> {
     await this.bookRepository.replaceById(id, book);
@@ -168,7 +168,7 @@ export class BookController {
       },
     },
   })
-  async deleteById(@param.path.string('id') id: string): Promise<void> {
+  async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.bookRepository.deleteById(id);
   }
 }

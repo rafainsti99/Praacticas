@@ -1,9 +1,9 @@
 import {Client} from '@loopback/testlab';
-import {BibliotecagnommoApplication} from '../..';
+import {GnommobibliotecaApplication} from '../..';
 import {setupApplication} from './test-helper';
 
 describe('HomePage', () => {
-  let app: BibliotecagnommoApplication;
+  let app: GnommobibliotecaApplication;
   let client: Client;
 
   before('setupApplication', async () => {

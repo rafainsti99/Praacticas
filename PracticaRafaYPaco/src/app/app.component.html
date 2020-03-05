@@ -25,34 +25,47 @@
 </div>
 
 <div id="formularios">
+  
   <div id="formularioAutores">
     <h1>Actualizar Autor</h1>
-    <form action="">
-      <select name="" id="">
+    <form id="formularioAutoresJSON">
+      <h3>Selecciona la acción que desees</h3>
+      <select name="opcionAutor" id="" [(ngModel)]="opcionAutor">
         <option value="crear">Crear Autor</option>
         <option value="modificar">Modificar Autor</option>
       </select><br>
       <label for="">DNI</label>
-      <input type="text" name="dni">
+      <input type="text" name="dni" id="dni" [(ngModel)]="dniAutor">
       <label for="">Nombre</label>
-      <input type="text" name="nombre">
+      <input type="text" name="nombre" id="firstName" [(ngModel)]="nombreAutor">
       <label for="">Apellido</label>
-      <input type="text" name="apellido">
-      <input type="button" id="enviar" value="Guardar">
+      <input type="text" name="apellido" id="lastName" [(ngModel)]="apellidoAutor">
+      <input (click)="datosAutores()" type="button" id="enviar" value="Guardar">
     </form>
   </div>
+
   <div id="formularioLibros">
     <h1>Actualizar Libro</h1>
-    <form action="">
-      <select name="" id="">
+
+    <form id="formularioLibrosJSON">
+      <h3>Selecciona la acción que desees</h3>
+      <select name="opcionLibro" id="" [(ngModel)]="opcionLibro">
         <option value="crear">Crear Libro</option>
         <option value="modificar">Modificar Libro</option>
       </select><br>
-      <label for="">ISBN</label>
-      <input type="text" name="isbn">
-      <label for="">Nombre</label>
-      <input type="text" name="nombre">
-      <input type="button" id="enviar" value="Guardar">
+      <label for="isbn">ISBN</label>
+      <input type="text" name="isbn" [(ngModel)]="isbnLibro">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombreL" name="nombre" [(ngModel)]="nombreLibro">
+      <input (click)="datosLibros()" type="button" id="enviar" value="Guardar">
     </form>
   </div>
+
+  <p>{{ opcionLibro }}</p>
+  <p>{{ nombreLibro }}</p>
+  <p>{{ isbnLibro }}</p>
+  <p>{{ dniAutor }}</p>
+  <p>{{ nombreAutor }}</p>
+  <p>{{ apellidoAutor }}</p>
+  <p>{{ opcionAutor }}</p>
 </div>

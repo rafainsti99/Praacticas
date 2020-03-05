@@ -1,9 +1,9 @@
 {
   "name": "bibliotecagnommo",
   "connector": "mysql",
-  "url":"",
+  "url": "",
   "host": "",
-  "port": "3306",
+  "port": 3306,
   "user": "bibliotecaAdmin",
   "password": "bibliotecaAdmin12345",
   "database": "bibliotecagnommo"

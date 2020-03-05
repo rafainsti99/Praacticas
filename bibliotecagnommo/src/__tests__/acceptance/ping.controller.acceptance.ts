@@ -1,9 +1,9 @@
 import {Client, expect} from '@loopback/testlab';
-import {BibliotecagnommoApplication} from '../..';
+import {GnommobibliotecaApplication} from '../..';
 import {setupApplication} from './test-helper';
 
 describe('PingController', () => {
-  let app: BibliotecagnommoApplication;
+  let app: GnommobibliotecaApplication;
   let client: Client;
 
   before('setupApplication', async () => {

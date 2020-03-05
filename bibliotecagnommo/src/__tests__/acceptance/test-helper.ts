@@ -1,4 +1,4 @@
-import {BibliotecagnommoApplication} from '../..';
+import {GnommobibliotecaApplication} from '../..';
 import {
   createRestAppClient,
   givenHttpServerConfig,
@@ -14,7 +14,7 @@ export async function setupApplication(): Promise<AppWithClient> {
     // port: +process.env.PORT,
   });
 
-  const app = new BibliotecagnommoApplication({
+  const app = new GnommobibliotecaApplication({
     rest: restConfig,
   });
 
@@ -27,6 +27,6 @@ export async function setupApplication(): Promise<AppWithClient> {
 }
 
 export interface AppWithClient {
-  app: BibliotecagnommoApplication;
+  app: GnommobibliotecaApplication;
   client: Client;
 }

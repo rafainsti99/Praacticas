@@ -13,8 +13,18 @@ export class UserService {
     return this.http.get('http://localhost:3000/authors');
   }
 
+  getAutor(id){
+    return this.http.get('http://localhost:3000/authors/'+id);
+  }
+
+  modificarAutor(id,json){
+    return this.http.patch('http://localhost:3000/authors/'+id,json);
+
+  }
+
   getLibros(){
     console.log("ha llegado");
     return this.http.get('http://localhost:3000/books');
   }
+
 }
