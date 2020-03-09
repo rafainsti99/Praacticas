@@ -25,6 +25,10 @@ export class UserService {
     return this.http.post('http://localhost:3000/authors',datos);
   }
 
+  crearLibro(datos){
+    return this.http.post('http://localhost:3000/books',datos);
+  }
+
   getLibros(){
     return this.http.get('http://localhost:3000/books');
   }

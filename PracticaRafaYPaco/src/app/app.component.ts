@@ -23,27 +23,206 @@ export class AppComponent{
   nombreAutor;
   apellidoAutor;
   comienzo = true;
-fin = false;
   infAutor;
   infNombre;
+  posiciones;
   infISBN;
-
+  dnis=[];
 constructor(
   protected userService :UserService
 ){}
 
-public usuarioExiste(id){
-  this.userService.getAutor(id)
-  .subscribe((data) => {
-      console.log(data['id']);
-      localStorage.setItem('existe','true');
-    },error => {
-      localStorage.setItem('existe','false');
-    }
+public accionLibro(){
+
+  var JSONform = this.formularioAutoresJSON(document.getElementById('formularioLibrosJSON').querySelectorAll("input"));
+  if (localStorage.getItem('existe')=="true" && this.opcionLibro == "crear"){
+    if(this.isbnLibro != undefined && this.nombreLibro != undefined && this.isbnLibro != "" && this.nombreLibro !=""){
+      
+        this.userService.crearLibro(JSONform)
+        .subscribe(
+        
+          (data) => { // Success
+            console.log("¡Bien HECHO!");
+          }
+        );
+        alert("Libro añadido correctamente");
     
-  );
+  }else{
+    alert("Asegurese de introducir todos los campos");
+  }
+  }
+  else if (localStorage.getItem('existe')=="false" && this.opcionAutor == "crear"){
+    if(this.dniAutor == undefined && this.dniAutor ==null){
+      alert("Introduce un DNI");
+    }
+
+    else{alert("Autor existe, introduce un usuario no existente")}
+  
+  }
+
+  if (localStorage.getItem('existe')=="true" && this.opcionAutor == "modificar"){
+  if(this.dniAutor != undefined && this.dniAutor != "" && this.apellidoAutor != "" &&  this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != ""){
+
+    this.userService.modificarAutor(this.dniAutor,JSONform)
+    .subscribe(
+    
+      (data) => { // Success
+        console.log(data);
+        alert("Autor modificado correctamente");
+      }
+    );
+    
+  }else{
+    alert("Asegurese de introducir bien todos los campos");
+  }
+}else if(localStorage.getItem('existe')=="false" && this.opcionAutor == "modificar"){
+  alert("Autor no existe");
+}
+
+
+
+
+
+
+
 
 }
+
+///////////////////////////////////
+
+
+public libroExiste(){
+
+  this.userService.getBook(this.isbnLibro)
+  .subscribe(
+    (data) => { // Successins
+
+   if(this.opcionLibro=="crear"){
+    localStorage.setItem('existe',"false");
+   }
+
+   else if(this.opcionLibro=="modificar"){
+     localStorage.setItem('existe', 'true');
+   }
+
+     
+      this.accionLibro() // <- localStorage HAS the data
+    },
+    (error) => { // error
+
+      if(this.opcionLibro=="crear"){
+        localStorage.setItem('existe',"true");
+       }
+    
+       else if(this.opcionLibro=="modificar"){
+         localStorage.setItem('existe', 'false');
+       }
+
+       
+     this.accionLibro() // <- localStorage HAS the data
+    }
+  );
+}
+
+
+
+
+public usuarioExiste(){
+
+  this.userService.getAutor(this.dniAutor)
+  .subscribe(
+    (data) => { // Successins
+
+   if(this.opcionAutor=="crear"){
+    localStorage.setItem('existe',"false");
+   }
+
+   else if(this.opcionAutor=="modificar"){
+     localStorage.setItem('existe', 'true');
+   }
+
+     
+      this.accionAuthor() // <- localStorage HAS the data
+    },
+    (error) => { // error
+
+      if(this.opcionAutor=="crear"){
+        localStorage.setItem('existe',"true");
+       }
+    
+       else if(this.opcionAutor=="modificar"){
+         localStorage.setItem('existe', 'false');
+       }
+
+       
+     this.accionAuthor() // <- localStorage HAS the data
+    }
+  );
+}
+
+public accionAuthor(){
+
+  var JSONform = this.formularioAutoresJSON(document.getElementById('formularioAutoresJSON').querySelectorAll("input"));
+  if (localStorage.getItem('existe')=="true" && this.opcionAutor == "crear"){
+    if(this.dniAutor != undefined && this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != "" && this.apellidoAutor !="" && this.dniAutor != ""){
+      var expReg = /^(\d{8})([A-Z])$/;
+      
+      if(expReg.test(this.dniAutor)){
+
+        this.userService.crearAutor(JSONform)
+        .subscribe(
+        
+          (data) => { // Success
+            console.log("¡Bien HECHO!");
+          }
+        );
+        alert("Autor añadido correctamente");
+    }else{
+      alert("Dni ya existe o esta mal introducido")
+    }
+  }else{
+    alert("Asegurese de introducir todos los campos");
+  }
+  }
+  else if (localStorage.getItem('existe')=="false" && this.opcionAutor == "crear"){
+    if(this.dniAutor == undefined && this.dniAutor ==null){
+      alert("Introduce un DNI");
+    }
+
+    else{alert("Autor existe, introduce un usuario no existente")}
+  
+  }
+
+  if (localStorage.getItem('existe')=="true" && this.opcionAutor == "modificar"){
+  if(this.dniAutor != undefined && this.dniAutor != "" && this.apellidoAutor != "" &&  this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != ""){
+
+    this.userService.modificarAutor(this.dniAutor,JSONform)
+    .subscribe(
+    
+      (data) => { // Success
+        console.log(data);
+        alert("Autor modificado correctamente");
+      }
+    );
+    
+  }else{
+    alert("Asegurese de introducir bien todos los campos");
+  }
+}else if(localStorage.getItem('existe')=="false" && this.opcionAutor == "modificar"){
+  alert("Autor no existe");
+}
+
+
+
+
+
+
+///////////////////////////////////
+
+}
+
+
+
 
 public formularioAutoresJSON(elementos){
 
@@ -129,17 +308,17 @@ this.userService.getAutor(autor)
 }
 
 
+
+
 public datosAutores(){
-  var expReg = /^(\d{8})([A-Z])$/;
+  /*var expReg = /^(\d{8})([A-Z])$/;
   var JSONform = this.formularioAutoresJSON(document.getElementById('formularioAutoresJSON').querySelectorAll("input"));
 
   if(this.opcionAutor == "crear"){
     
     if(this.dniAutor != undefined && this.apellidoAutor != undefined && this.nombreAutor != undefined){
-      
       this.usuarioExiste(this.dniAutor);
-
-      if(localStorage.getItem('existe') == 'false'){
+      
         var expReg = /^(\d{8})([A-Z])$/;
         
         if(expReg.test(this.dniAutor)){
@@ -152,12 +331,7 @@ public datosAutores(){
             }
           );
           alert("Autor añadido correctamente");
-        }
-
-
-else{
-  alert("Dni mal introducido")
-}
+        
 
       }else{
         alert("Dni ya existe o esta mal introducido")
@@ -181,7 +355,7 @@ else{
     );
   }else{
     alert("Debe de completar todos los campos para poder operar");
-  }
+  }*/
 }
 
 
@@ -193,7 +367,7 @@ datosLibros(){
   if(this.opcionLibro == "crear"){
     if(this.nombreLibro != undefined && this.isbnLibro != undefined && this.autorLibro !=undefined && this.autorLibro !="" && this.isbnLibro !="" && this.nombreLibro !=""){
 
-      
+
     }
     
   }
@@ -218,45 +392,30 @@ datosLibros(){
 }
 
 ngOnInit() {
-  this.usuarioExiste('11111110P');
 
   this.userService.getAutores()
   .subscribe(
-    
+   
     (data) => { // Success
       this.autores = data; 
-         
-    }
-  );
+    });
 
   this.userService.getLibros()
   .subscribe(
     
     (data) => { // Success
       this.libros = data; 
-         
     }
   );
-  
+
+  var libros = document.getElementsByClassName("libros");
+  for(var i=0;i<libros.length;i++){
+
+    libros[i].addEventListener("mouseenter",function(){
+
+      this.setAttribute('style','cursor:grab;');
+    });
+  }
 }
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

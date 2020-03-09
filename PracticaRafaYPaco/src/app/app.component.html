@@ -19,7 +19,7 @@
   <div class="libros">
     <h1>Libros</h1>
     <div *ngFor='let libro of libros'>
-      <p id=libro.id (click)="verLibro(libro.id,libro.name,libro.author)">Título: {{ libro["name"] }}  ISBN: {{ libro["id"] }}</p>
+      <p class="libros" id=libro.id (click)="verLibro(libro.id,libro.name,libro.author)">Título: {{ libro["name"] }}  ISBN: {{ libro["id"] }}</p>
     </div>
 </div>
 </div>
@@ -40,7 +40,7 @@
       <input type="text" name="firstName" id="firstName" [(ngModel)]="nombreAutor">
       <label for="">Apellido</label>
       <input type="text" name="lastName" id="lastName" [(ngModel)]="apellidoAutor">
-      <input (click)="datosAutores()" type="button" id="enviar" value="Guardar">
+      <input (click)="usuarioExiste()" type="button" id="enviar" value="Guardar">
     </form>
   </div>
 
@@ -66,3 +66,4 @@
 
 </div>
 <p>{{ autorLibro }}</p>
+<p>{{ dniAutor }}</p>
