@@ -19,7 +19,7 @@
   <div class="libros">
     <h1>Libros</h1>
     <div *ngFor='let libro of libros'>
-      <p>Título: {{ libro["name"] }}  ISBN: {{ libro["isbn"] }}</p>
+      <p (click)="verLibro(libro.isbn)">Título: {{ libro["name"] }}  ISBN: {{ libro["isbn"] }}</p>
     </div>
 </div>
 </div>
@@ -27,7 +27,7 @@
 <div id="formularios">
   
   <div id="formularioAutores">
-    <h1>Actualizar Autor</h1>
+    <h1>Crear/Modificar Autor</h1>
     <form id="formularioAutoresJSON">
       <h3>Selecciona la acción que desees</h3>
       <select name="opcionAutor" id="" [(ngModel)]="opcionAutor">
@@ -35,17 +35,17 @@
         <option value="modificar">Modificar Autor</option>
       </select><br>
       <label for="">DNI</label>
-      <input type="text" name="dni" id="dni" [(ngModel)]="dniAutor">
+      <input type="text" name="id" id="dni" [(ngModel)]="dniAutor">
       <label for="">Nombre</label>
-      <input type="text" name="nombre" id="firstName" [(ngModel)]="nombreAutor">
+      <input type="text" name="firstName" id="firstName" [(ngModel)]="nombreAutor">
       <label for="">Apellido</label>
-      <input type="text" name="apellido" id="lastName" [(ngModel)]="apellidoAutor">
+      <input type="text" name="lastName" id="lastName" [(ngModel)]="apellidoAutor">
       <input (click)="datosAutores()" type="button" id="enviar" value="Guardar">
     </form>
   </div>
 
   <div id="formularioLibros">
-    <h1>Actualizar Libro</h1>
+    <h1>Crear/Modificar Libro</h1>
 
     <form id="formularioLibrosJSON">
       <h3>Selecciona la acción que desees</h3>
@@ -61,11 +61,4 @@
     </form>
   </div>
 
-  <p>{{ opcionLibro }}</p>
-  <p>{{ nombreLibro }}</p>
-  <p>{{ isbnLibro }}</p>
-  <p>{{ dniAutor }}</p>
-  <p>{{ nombreAutor }}</p>
-  <p>{{ apellidoAutor }}</p>
-  <p>{{ opcionAutor }}</p>
 </div>
