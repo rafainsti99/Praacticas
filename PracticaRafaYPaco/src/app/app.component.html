@@ -19,7 +19,7 @@
   <div class="libros">
     <h1>Libros</h1>
     <div *ngFor='let libro of libros'>
-      <p (click)="verLibro(libro.isbn)">Título: {{ libro["name"] }}  ISBN: {{ libro["isbn"] }}</p>
+      <p (click)="verLibro(libro.id)">Título: {{ libro["name"] }}  ISBN: {{ libro["id"] }}</p>
     </div>
 </div>
 </div>
@@ -54,11 +54,15 @@
         <option value="modificar">Modificar Libro</option>
       </select><br>
       <label for="isbn">ISBN</label>
-      <input type="text" name="isbn" [(ngModel)]="isbnLibro">
+      <input type="text" id="idISBN" name="id" [(ngModel)]="isbnLibro">
       <label for="nombre">Nombre</label>
-      <input type="text" id="nombreL" name="nombre" [(ngModel)]="nombreLibro">
+      <input type="text" id="name" name="name" [(ngModel)]="nombreLibro">
+       <label for="author">Autor</label>
+       <input type="text" id="author" name="author" [(ngModel)]="autorLibro">
       <input (click)="datosLibros()" type="button" id="enviar" value="Guardar">
+      
     </form>
   </div>
 
 </div>
+<p>{{ autorLibro }}</p>

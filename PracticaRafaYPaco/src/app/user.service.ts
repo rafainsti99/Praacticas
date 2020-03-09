@@ -33,4 +33,8 @@ export class UserService {
     return this.http.get('http://localhost:3000/books/'+id);
   }
 
+  modificarLibro(id,datos){
+    return this.http.patch('http://localhost:3000/books/'+id,datos);
+  }
+
 }

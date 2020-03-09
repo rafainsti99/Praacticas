@@ -13,11 +13,12 @@ declare var $:any;
 export class AppComponent{
   title = 'Biblioteca de Rafa y Paco';
   autores;
-  libros;
+  libros:any;
   isbnLibro;
   nombreLibro;
   opcionLibro;
   opcionAutor;
+  autorLibro;
   dniAutor;
   nombreAutor;
   apellidoAutor;
@@ -48,7 +49,8 @@ public formularioAutoresJSON(elementos){
         var value = element.value;
 
         if(name){
-          datos[name]=value
+
+            datos[name]=value;
         }
       }
   return datos;
@@ -79,7 +81,7 @@ this.userService.getBook(isbn)
       if(document.getElementById("infLibro") == null){
         var mdiv = document.createElement("div");
         var parrafo = document.createElement("p");
-        var isbn = document.createTextNode("ISBN: "+data['isbn']);
+        var isbn = document.createTextNode("ISBN: "+data['id']);
         var parrafo2 = document.createElement("p");
         var nombre = document.createTextNode("Nombre: "+data['name']);
         var parrafo3 = document.createElement("p");
@@ -107,9 +109,9 @@ this.userService.getBook(isbn)
         mdiv.setAttribute('id',"infLibro");
         mdiv.style.textAlign = "center";
         mdiv.style.paddingBottom = "40px";
-        mdiv.style.marginTop = "-40em";
-        mdiv.style.backgroundColor = "#CBCBCB"
-        mdiv.style.marginLeft = "40.5%";
+        mdiv.style.backgroundColor = "#CBCBCB";
+        mdiv.style.marginLeft = "40%";
+        mdiv.style.marginTop = "-10%";
         mdiv.style.border = "2px solid black";
         mdiv.style.borderRadius = "6px";
         mdiv.style.position = "absolute";
@@ -173,9 +175,12 @@ else{
     .subscribe(
     
       (data) => { // Success
+        console.log(data);
         alert("Autor modificado correctamente");
       }
     );
+  }else{
+    alert("Debe de completar todos los campos para poder operar");
   }
 }
 
@@ -183,13 +188,28 @@ else{
 
 datosLibros(){
 
+  var JSONform2 = this.formularioAutoresJSON(document.getElementById('formularioLibrosJSON').querySelectorAll("input"));
+  console.log(this.isbnLibro);
   if(this.opcionLibro == "crear"){
     if(this.nombreLibro != "" && this.isbnLibro != ""){
     }
-
+    
   }
   else if (this.opcionLibro == "modificar"){
-    if(this.nombreLibro != "" && this.isbnLibro != ""){
+    console.log(this.nombreLibro + "  " + this.isbnLibro);
+    if(this.nombreLibro != undefined && this.isbnLibro != undefined && this.autorLibro !=undefined && this.autorLibro !="" && this.isbnLibro !="" && this.nombreLibro !=""){
+      console.log(JSONform2);
+      console.log("hola");
+      this.userService.modificarLibro(this.isbnLibro,JSONform2)
+      .subscribe(
+    
+        (data) => { // Success
+          console.log(data);
+          alert("Libro modificado correctamente");
+        }
+      );
+    }else{
+      alert("Debe de completar todos los campos para poder operar");
     }
 
   }
