@@ -23,6 +23,11 @@ export class AppComponent{
   nombreAutor;
   apellidoAutor;
   comienzo = true;
+fin = false;
+  infAutor;
+  infNombre;
+  infISBN;
+
 constructor(
   protected userService :UserService
 ){}
@@ -56,78 +61,73 @@ public formularioAutoresJSON(elementos){
   return datos;
 }
 
-public getNombreAutor(id){
 
-  this.userService.getAutor(String(id))
-      .subscribe(
-        (data) =>{
-            localStorage.setItem('autor',data['firstName'])
-        });
-
-}
-
-public verLibro(isbn){
-this.userService.getBook(isbn)
+public verLibro(isbn,nombre,autor){
+this.userService.getAutor(autor)
   .subscribe(
     
     (data) => { // Success
-      this.getNombreAutor(data['author'])
-      console.log(data['isbn']);
-      console.log(data['name']);
-      
-      var nombreAutor = String(localStorage.getItem('autor'));   
-      console.log(nombreAutor);
+      console.log(this.infISBN);
 
-      if(document.getElementById("infLibro") == null){
-        var mdiv = document.createElement("div");
-        var parrafo = document.createElement("p");
-        var isbn = document.createTextNode("ISBN: "+data['id']);
-        var parrafo2 = document.createElement("p");
-        var nombre = document.createTextNode("Nombre: "+data['name']);
-        var parrafo3 = document.createElement("p");
-        var nameAutor = document.createTextNode("Autor: "+nombreAutor);
-        var mh1 = document.createElement("h1");
-        mh1.style.marginTop = '-23px';
-        var infProd =  "Información del producto:";
-        var cerrar = document.createElement("img");
-        cerrar.setAttribute('src','assets/cerrarVentana.png');
-        cerrar.setAttribute('id', "xcerrar");
-        cerrar.setAttribute('style','width:50px;height:50px;');
-        cerrar.style.height = '30px';
-        cerrar.style.width = '30px';
-        cerrar.style.marginLeft = '470px';
-        
-        mh1.append(infProd);
-        parrafo.append(isbn);
-        parrafo2.append(nombre);
-        parrafo3.append(nameAutor);
-        mdiv.append(cerrar);
-        mdiv.append(mh1);
-        mdiv.append(parrafo);
-        mdiv.append(parrafo2);
-        mdiv.append(parrafo3);
-        mdiv.setAttribute('id',"infLibro");
-        mdiv.style.textAlign = "center";
-        mdiv.style.paddingBottom = "40px";
-        mdiv.style.backgroundColor = "#CBCBCB";
-        mdiv.style.marginLeft = "40%";
-        mdiv.style.marginTop = "-10%";
-        mdiv.style.border = "2px solid black";
-        mdiv.style.borderRadius = "6px";
-        mdiv.style.position = "absolute";
-        mdiv.style.width = "500px";
-        mdiv.style.zIndex = "10";
-        document.body.append(mdiv);
-        
-        document.getElementById("xcerrar").addEventListener('click', function(event){
-          this.parentElement.remove();
-        })
-      }
+      this.infAutor = data['firstName'];
     
     }
+    
     );
 
+    if(document.getElementById("infLibro") == undefined && document.getElementById("infLibro") == null){
+      var mdiv = document.createElement("div");
+      var parrafo = document.createElement("p");
+      var parrafo2 = document.createElement("p");
+      
+      var parrafo3 = document.createElement("p");
+      var nameAutor = document.createTextNode("Autor: "+autor);
+      var mh1 = document.createElement("h1");
+      mh1.style.marginTop = '-23px';
+      var infProd =  "Información del producto:";
+      var cerrar = document.createElement("img");
+      cerrar.setAttribute('src','assets/cerrarVentana.png');
+      cerrar.setAttribute('id', "xcerrar");
+      cerrar.setAttribute('style','width:50px;height:50px;');
+      cerrar.style.height = '30px';
+      cerrar.style.width = '30px';
+      cerrar.style.marginLeft = '470px';
+      
+      mh1.append(infProd);
+      parrafo.append(document.createTextNode("ISBN: "+isbn));
+      parrafo2.append(document.createTextNode("Nombre: "+nombre));
+      parrafo3.append(nameAutor);
+      mdiv.append(cerrar);
+      mdiv.append(mh1);
+      mdiv.append(parrafo);
+      mdiv.append(parrafo2);
+      mdiv.append(parrafo3);
+      mdiv.setAttribute('id',"infLibro");
+      mdiv.style.textAlign = "center";
+      mdiv.style.paddingBottom = "40px";
+      mdiv.style.backgroundColor = "#CBCBCB";
+      mdiv.style.marginLeft = "40%";
+      mdiv.style.marginTop = "-10%";
+      mdiv.style.border = "2px solid black";
+      mdiv.style.borderRadius = "6px";
+      mdiv.style.position = "absolute";
+      mdiv.style.width = "500px";
+      mdiv.style.zIndex = "10";
+      document.body.append(mdiv);
+      
+
+      document.getElementById("xcerrar").addEventListener('click', function(event){
+        this.parentElement.remove();
+        console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      })
+
+      
+
+
+    }
+    
 }
+
 
 public datosAutores(){
   var expReg = /^(\d{8})([A-Z])$/;
@@ -191,7 +191,9 @@ datosLibros(){
   var JSONform2 = this.formularioAutoresJSON(document.getElementById('formularioLibrosJSON').querySelectorAll("input"));
   console.log(this.isbnLibro);
   if(this.opcionLibro == "crear"){
-    if(this.nombreLibro != "" && this.isbnLibro != ""){
+    if(this.nombreLibro != undefined && this.isbnLibro != undefined && this.autorLibro !=undefined && this.autorLibro !="" && this.isbnLibro !="" && this.nombreLibro !=""){
+
+      
     }
     
   }

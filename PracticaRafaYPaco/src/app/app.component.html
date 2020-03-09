@@ -19,7 +19,7 @@
   <div class="libros">
     <h1>Libros</h1>
     <div *ngFor='let libro of libros'>
-      <p (click)="verLibro(libro.id)">Título: {{ libro["name"] }}  ISBN: {{ libro["id"] }}</p>
+      <p id=libro.id (click)="verLibro(libro.id,libro.name,libro.author)">Título: {{ libro["name"] }}  ISBN: {{ libro["id"] }}</p>
     </div>
 </div>
 </div>
