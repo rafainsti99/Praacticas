@@ -12,6 +12,8 @@ declare var $:any;
 })
 export class AppComponent{
   title = 'Biblioteca de Rafa y Paco';
+  
+  expRegdni = /^(\d{8})([A-Z])$/;
   autores;
   libros:any;
   isbnLibro;
@@ -33,8 +35,6 @@ constructor(
 ){}
 
 public accionLibro(continuar){
-
-  if(this.isbnLibro != undefined && this.isbnLibro != "" && this.nombreLibro != "" &&  this.nombreLibro != undefined && this.autorLibro != undefined && this.autorLibro != ""){
   
   var JSONform = this.formularioAutoresJSON(document.getElementById('formularioLibrosJSON').querySelectorAll("input"));
   if(continuar==0){
@@ -83,14 +83,15 @@ if (localStorage.getItem('existe')=="true" && this.opcionLibro == "modificar"){
 }
 
   }
-}else{
-  alert("Introduce todos los campos")
-}
+
 ///////////////////////////////////
 }
 
 public libroExiste(){
+  var numeros = /^[0-9]{10,13}$/;
 
+  if(this.isbnLibro != undefined && this.isbnLibro != "" && this.nombreLibro != "" &&  this.nombreLibro != undefined && this.autorLibro != undefined && this.autorLibro != ""){
+    if(this.expRegdni.test(this.autorLibro)&&numeros.test(this.isbnLibro)){
   this.userService.getBook(this.isbnLibro)
   .subscribe(
     (data) => { // Successins
@@ -120,12 +121,19 @@ public libroExiste(){
      this.accionLibro(0) // <- localStorage HAS the data
     }
   );
+  }else{
+    alert("Asegurese de estar introduciendo bien los datos")
+  }
+}else{
+  alert("Introduce todos los campos")
+}
 }
 
 
 
 public usuarioExiste(id,opcion){
-
+  var expNombreApellidos=  /^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$/;
+//Libro
 if (opcion==1){
   this.userService.getAutor(id)
   .subscribe(
@@ -142,6 +150,9 @@ if (opcion==1){
 
 
 }else{
+//Autor
+if(this.dniAutor != undefined && this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != "" && this.apellidoAutor !="" && this.dniAutor != ""){
+if(this.expRegdni.test(this.dniAutor)&&expNombreApellidos.test(this.nombreAutor)&&expNombreApellidos.test(this.apellidoAutor)){
   this.userService.getAutor(id)
   .subscribe(
     (data) => { // Successins
@@ -171,17 +182,21 @@ if (opcion==1){
      this.accionAuthor() // <- localStorage HAS the data
     }
   );
+
+
+}else{
+  alert("Asegurese de introducir bien todos los campos");
 }
+}else{
+  alert("Asegurese de introducir todos los campos");
+}
+  }
 }
 
 public accionAuthor(){
 
   var JSONform = this.formularioAutoresJSON(document.getElementById('formularioAutoresJSON').querySelectorAll("input"));
-  if(this.dniAutor != undefined && this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != "" && this.apellidoAutor !="" && this.dniAutor != ""){
   if (localStorage.getItem('existe')=="true" && this.opcionAutor == "crear"){
-      var expReg = /^(\d{8})([A-Z])$/;
-      
-      if(expReg.test(this.dniAutor)){
 
         this.userService.crearAutor(JSONform)
         .subscribe(
@@ -191,9 +206,7 @@ public accionAuthor(){
           }
         );
         alert("Autor añadido correctamente");
-    }else{
-      alert("Dni esta mal introducido")
-    }
+    
   }
   
   else if (localStorage.getItem('existe')=="false" && this.opcionAutor == "crear"){
@@ -219,13 +232,8 @@ public accionAuthor(){
 }else if(localStorage.getItem('existe')=="false" && this.opcionAutor == "modificar"){
   alert("Autor no existe");
 }
-}else{
-  alert("Asegurese de introducir todos los campos");
+
 }
-}
-
-
-
 
 public formularioAutoresJSON(elementos){
 

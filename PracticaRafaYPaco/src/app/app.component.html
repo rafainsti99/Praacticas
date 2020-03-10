@@ -12,14 +12,14 @@
   <div>
     <h1>Autores</h1>
     <div class="autores" *ngFor='let autor of autores'>
-        <p>{{ autor["firstName"] }} {{ autor["lastName"] }}</p>
+        <tr>{{ autor["firstName"] }} {{ autor["lastName"] }}</tr>
     </div>
 </div>
 
   <div class="libros">
     <h1>Libros</h1>
-    <div *ngFor='let libro of libros'>
-      <p class="libros" id=libro.id (click)="verLibro(libro.id,libro.name,libro.author)">Título: {{ libro["name"] }}  ISBN: {{ libro["id"] }}</p>
+    <div class="librillos" *ngFor='let libro of libros'>
+      <p class="libros" id=libro.id (click)="verLibro(libro.id,libro.name,libro.author)">{{ libro["name"] }}</p>
     </div>
 </div>
 </div>
