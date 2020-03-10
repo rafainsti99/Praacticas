@@ -32,64 +32,62 @@ constructor(
   protected userService :UserService
 ){}
 
-public accionLibro(){
+public accionLibro(continuar){
 
-  var JSONform = this.formularioAutoresJSON(document.getElementById('formularioLibrosJSON').querySelectorAll("input"));
-  if (localStorage.getItem('existe')=="true" && this.opcionLibro == "crear"){
-    if(this.isbnLibro != undefined && this.nombreLibro != undefined && this.isbnLibro != "" && this.nombreLibro !=""){
-      
-        this.userService.crearLibro(JSONform)
-        .subscribe(
-        
-          (data) => { // Success
-            console.log("¡Bien HECHO!");
-          }
-        );
-        alert("Libro añadido correctamente");
-    
-  }else{
-    alert("Asegurese de introducir todos los campos");
-  }
-  }
-  else if (localStorage.getItem('existe')=="false" && this.opcionAutor == "crear"){
-    if(this.dniAutor == undefined && this.dniAutor ==null){
-      alert("Introduce un DNI");
-    }
-
-    else{alert("Autor existe, introduce un usuario no existente")}
+  if(this.isbnLibro != undefined && this.isbnLibro != "" && this.nombreLibro != "" &&  this.nombreLibro != undefined && this.autorLibro != undefined && this.autorLibro != ""){
   
-  }
+  var JSONform = this.formularioAutoresJSON(document.getElementById('formularioLibrosJSON').querySelectorAll("input"));
+  if(continuar==0){
+  
+    this.usuarioExiste(this.autorLibro,1)
+  }else{
+  if (localStorage.getItem('existe')=="true" && this.opcionLibro == "crear"){
 
-  if (localStorage.getItem('existe')=="true" && this.opcionAutor == "modificar"){
-  if(this.dniAutor != undefined && this.dniAutor != "" && this.apellidoAutor != "" &&  this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != ""){
+  var expReg = /^(\d{8})([A-Z])$/; 
+  if(expReg.test(this.autorLibro)){
+        
+          this.userService.crearLibro(JSONform)
+          .subscribe(
+          
+            (data) => { // Success
+              alert("Libro añadido correctamente");
+            },(error) =>{
+              alert("Libro ya existe, introduzca uno nuevo")
+            }
+          );
+        }else{
+          alert("asegurese de estar introduciendo un dni correcto");
+        }
 
-    this.userService.modificarAutor(this.dniAutor,JSONform)
+}
+else if (localStorage.getItem('existe')=="false" && this.opcionLibro == "crear"){
+  
+  alert("Autor no existe o ya tiene el mísmo libro")
+
+}
+
+if (localStorage.getItem('existe')=="true" && this.opcionLibro == "modificar"){
+
+    this.userService.modificarLibro(this.isbnLibro,JSONform)
     .subscribe(
     
       (data) => { // Success
-        console.log(data);
-        alert("Autor modificado correctamente");
+        alert("Libro modificado correctamente");
+      },(error) =>{
+        alert("Libro no existe, introduzca uno que exista")
       }
     );
     
-  }else{
-    alert("Asegurese de introducir bien todos los campos");
-  }
-}else if(localStorage.getItem('existe')=="false" && this.opcionAutor == "modificar"){
+}else if(localStorage.getItem('existe')=="false" && this.opcionLibro == "modificar"){
   alert("Autor no existe");
 }
 
-
-
-
-
-
-
-
+  }
+}else{
+  alert("Introduce todos los campos")
 }
-
 ///////////////////////////////////
-
+}
 
 public libroExiste(){
 
@@ -106,7 +104,7 @@ public libroExiste(){
    }
 
      
-      this.accionLibro() // <- localStorage HAS the data
+      this.accionLibro(0) // <- localStorage HAS the data
     },
     (error) => { // error
 
@@ -119,17 +117,32 @@ public libroExiste(){
        }
 
        
-     this.accionLibro() // <- localStorage HAS the data
+     this.accionLibro(0) // <- localStorage HAS the data
     }
   );
 }
 
 
 
+public usuarioExiste(id,opcion){
 
-public usuarioExiste(){
+if (opcion==1){
+  this.userService.getAutor(id)
+  .subscribe(
+    (data) => { // Successins
+    localStorage.setItem('existe',"true");
+      this.accionLibro(1) // <- localStorage HAS the data
+    },
+    (error) => { // error
+         localStorage.setItem('existe', 'false');
 
-  this.userService.getAutor(this.dniAutor)
+     this.accionLibro(1) // <- localStorage HAS the data
+    }
+  );
+
+
+}else{
+  this.userService.getAutor(id)
   .subscribe(
     (data) => { // Successins
 
@@ -159,12 +172,13 @@ public usuarioExiste(){
     }
   );
 }
+}
 
 public accionAuthor(){
 
   var JSONform = this.formularioAutoresJSON(document.getElementById('formularioAutoresJSON').querySelectorAll("input"));
+  if(this.dniAutor != undefined && this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != "" && this.apellidoAutor !="" && this.dniAutor != ""){
   if (localStorage.getItem('existe')=="true" && this.opcionAutor == "crear"){
-    if(this.dniAutor != undefined && this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != "" && this.apellidoAutor !="" && this.dniAutor != ""){
       var expReg = /^(\d{8})([A-Z])$/;
       
       if(expReg.test(this.dniAutor)){
@@ -178,12 +192,10 @@ public accionAuthor(){
         );
         alert("Autor añadido correctamente");
     }else{
-      alert("Dni ya existe o esta mal introducido")
+      alert("Dni esta mal introducido")
     }
-  }else{
-    alert("Asegurese de introducir todos los campos");
   }
-  }
+  
   else if (localStorage.getItem('existe')=="false" && this.opcionAutor == "crear"){
     if(this.dniAutor == undefined && this.dniAutor ==null){
       alert("Introduce un DNI");
@@ -194,31 +206,22 @@ public accionAuthor(){
   }
 
   if (localStorage.getItem('existe')=="true" && this.opcionAutor == "modificar"){
-  if(this.dniAutor != undefined && this.dniAutor != "" && this.apellidoAutor != "" &&  this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != ""){
+ 
 
     this.userService.modificarAutor(this.dniAutor,JSONform)
     .subscribe(
     
       (data) => { // Success
-        console.log(data);
         alert("Autor modificado correctamente");
       }
     );
     
-  }else{
-    alert("Asegurese de introducir bien todos los campos");
-  }
 }else if(localStorage.getItem('existe')=="false" && this.opcionAutor == "modificar"){
   alert("Autor no existe");
 }
-
-
-
-
-
-
-///////////////////////////////////
-
+}else{
+  alert("Asegurese de introducir todos los campos");
+}
 }
 
 
@@ -246,141 +249,80 @@ this.userService.getAutor(autor)
   .subscribe(
     
     (data) => { // Success
-      console.log(this.infISBN);
-
       this.infAutor = data['firstName'];
-    
+      this.crearDivLibro(isbn, nombre, this.infAutor);
     }
     
     );
 
-    if(document.getElementById("infLibro") == undefined && document.getElementById("infLibro") == null){
-      var mdiv = document.createElement("div");
-      var parrafo = document.createElement("p");
-      var parrafo2 = document.createElement("p");
-      
-      var parrafo3 = document.createElement("p");
-      var nameAutor = document.createTextNode("Autor: "+autor);
-      var mh1 = document.createElement("h1");
-      mh1.style.marginTop = '-23px';
-      var infProd =  "Información del producto:";
-      var cerrar = document.createElement("img");
-      cerrar.setAttribute('src','assets/cerrarVentana.png');
-      cerrar.setAttribute('id', "xcerrar");
-      cerrar.setAttribute('style','width:50px;height:50px;');
-      cerrar.style.height = '30px';
-      cerrar.style.width = '30px';
-      cerrar.style.marginLeft = '470px';
-      
-      mh1.append(infProd);
-      parrafo.append(document.createTextNode("ISBN: "+isbn));
-      parrafo2.append(document.createTextNode("Nombre: "+nombre));
-      parrafo3.append(nameAutor);
-      mdiv.append(cerrar);
-      mdiv.append(mh1);
-      mdiv.append(parrafo);
-      mdiv.append(parrafo2);
-      mdiv.append(parrafo3);
-      mdiv.setAttribute('id',"infLibro");
-      mdiv.style.textAlign = "center";
-      mdiv.style.paddingBottom = "40px";
-      mdiv.style.backgroundColor = "#CBCBCB";
-      mdiv.style.marginLeft = "40%";
-      mdiv.style.marginTop = "-10%";
-      mdiv.style.border = "2px solid black";
-      mdiv.style.borderRadius = "6px";
-      mdiv.style.position = "absolute";
-      mdiv.style.width = "500px";
-      mdiv.style.zIndex = "10";
-      document.body.append(mdiv);
-      
-
-      document.getElementById("xcerrar").addEventListener('click', function(event){
-        this.parentElement.remove();
-        console.log("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-      })
-
-      
-
-
-    }
     
 }
 
+public crearDivLibro(isbn, nombre, autor){
 
 
+if(document.getElementById("infLibro") == undefined && document.getElementById("infLibro") == null){
+  var mdiv = document.createElement("div");
+  var parrafo = document.createElement("p");
+  var parrafo2 = document.createElement("p");
+  
+  var parrafo3 = document.createElement("p");
+  var nameAutor = document.createTextNode("Autor: "+autor);
+  var mh1 = document.createElement("h1");
+  mh1.style.marginTop = '-23px';
+  var infProd =  "Información del producto:";
+  var cerrar = document.createElement("img");
+  cerrar.setAttribute('src','assets/cerrarVentana.png');
+  cerrar.setAttribute('id', "xcerrar");
+  cerrar.setAttribute('style','width:50px;height:50px;');
+  cerrar.style.height = '30px';
+  cerrar.style.width = '30px';
+  cerrar.style.marginLeft = '470px';
+  
+  mh1.append(infProd);
+  parrafo.append(document.createTextNode("ISBN: "+isbn));
+  parrafo2.append(document.createTextNode("Nombre: "+nombre));
+  parrafo3.append(nameAutor);
+  mdiv.append(cerrar);
+  mdiv.append(mh1);
+  mdiv.append(parrafo);
+  mdiv.append(parrafo2);
+  mdiv.append(parrafo3);
+  mdiv.setAttribute('id',"infLibro");
+  mdiv.style.textAlign = "center";
+  mdiv.style.paddingBottom = "40px";
+  mdiv.style.backgroundColor = "#CBCBCB";
+  mdiv.style.marginLeft = "40%";
+  mdiv.style.marginTop = "-10%";
+  mdiv.style.border = "2px solid black";
+  mdiv.style.borderRadius = "6px";
+  mdiv.style.position = "absolute";
+  mdiv.style.width = "500px";
+  mdiv.style.zIndex = "10";
+  document.body.append(mdiv);
 
-public datosAutores(){
-  /*var expReg = /^(\d{8})([A-Z])$/;
-  var JSONform = this.formularioAutoresJSON(document.getElementById('formularioAutoresJSON').querySelectorAll("input"));
+  document.getElementById("xcerrar").addEventListener('click', function(event){
+    this.parentElement.remove();
+  })
 
-  if(this.opcionAutor == "crear"){
-    
-    if(this.dniAutor != undefined && this.apellidoAutor != undefined && this.nombreAutor != undefined){
-      this.usuarioExiste(this.dniAutor);
-      
-        var expReg = /^(\d{8})([A-Z])$/;
-        
-        if(expReg.test(this.dniAutor)){
-
-          this.userService.crearAutor(JSONform)
-          .subscribe(
-          
-            (data) => { // Success
-              console.log("¡Bien HECHO!");
-            }
-          );
-          alert("Autor añadido correctamente");
-        
-
-      }else{
-        alert("Dni ya existe o esta mal introducido")
-      }
-    
-      
-    }else{
-      alert("Asegurese de introducir todos los campos");
-    }
-
-  }
-  else if(this.opcionAutor == "modificar" && this.dniAutor != "" && this.apellidoAutor != "" && this.nombreAutor != ""){
-
-    this.userService.modificarAutor(this.dniAutor,JSONform)
-    .subscribe(
-    
-      (data) => { // Success
-        console.log(data);
-        alert("Autor modificado correctamente");
-      }
-    );
-  }else{
-    alert("Debe de completar todos los campos para poder operar");
-  }*/
 }
-
+}
 
 
 datosLibros(){
 
   var JSONform2 = this.formularioAutoresJSON(document.getElementById('formularioLibrosJSON').querySelectorAll("input"));
-  console.log(this.isbnLibro);
   if(this.opcionLibro == "crear"){
     if(this.nombreLibro != undefined && this.isbnLibro != undefined && this.autorLibro !=undefined && this.autorLibro !="" && this.isbnLibro !="" && this.nombreLibro !=""){
-
-
     }
     
   }
   else if (this.opcionLibro == "modificar"){
-    console.log(this.nombreLibro + "  " + this.isbnLibro);
     if(this.nombreLibro != undefined && this.isbnLibro != undefined && this.autorLibro !=undefined && this.autorLibro !="" && this.isbnLibro !="" && this.nombreLibro !=""){
-      console.log(JSONform2);
-      console.log("hola");
       this.userService.modificarLibro(this.isbnLibro,JSONform2)
       .subscribe(
     
         (data) => { // Success
-          console.log(data);
           alert("Libro modificado correctamente");
         }
       );
