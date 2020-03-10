@@ -40,7 +40,7 @@
       <input type="text" name="firstName" id="firstName" [(ngModel)]="nombreAutor">
       <label for="">Apellido</label>
       <input type="text" name="lastName" id="lastName" [(ngModel)]="apellidoAutor">
-      <input (click)="usuarioExiste(dniAutor,0)" type="button" id="enviar" value="Guardar">
+      <input class="boton" (click)="usuarioExiste(dniAutor,0)" type="button" id="enviar" value="Guardar">
     </form>
   </div>
 
@@ -59,7 +59,7 @@
       <input type="text" id="name" name="name" [(ngModel)]="nombreLibro">
        <label for="author">Autor</label>
        <input type="text" id="author" name="author" [(ngModel)]="autorLibro">
-      <input (click)="libroExiste()" type="button" id="enviar" value="Guardar">
+      <input class="boton" (click)="libroExiste()" type="button" id="enviar" value="Guardar">
       
     </form>
   </div>

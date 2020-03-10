@@ -103,7 +103,6 @@ public libroExiste(){
    else if(this.opcionLibro=="modificar"){
      localStorage.setItem('existe', 'true');
    }
-
      
       this.accionLibro(0) // <- localStorage HAS the data
     },
@@ -116,7 +115,6 @@ public libroExiste(){
        else if(this.opcionLibro=="modificar"){
          localStorage.setItem('existe', 'false');
        }
-
        
      this.accionLibro(0) // <- localStorage HAS the data
     }
@@ -128,8 +126,6 @@ public libroExiste(){
   alert("Introduce todos los campos")
 }
 }
-
-
 
 public usuarioExiste(id,opcion){
   var expNombreApellidos=  /^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$/;
@@ -148,7 +144,6 @@ if (opcion==1){
     }
   );
 
-
 }else{
 //Autor
 if(this.dniAutor != undefined && this.apellidoAutor != undefined && this.nombreAutor != undefined && this.nombreAutor != "" && this.apellidoAutor !="" && this.dniAutor != ""){
@@ -164,8 +159,7 @@ if(this.expRegdni.test(this.dniAutor)&&expNombreApellidos.test(this.nombreAutor)
    else if(this.opcionAutor=="modificar"){
      localStorage.setItem('existe', 'true');
    }
-
-     
+    
       this.accionAuthor() // <- localStorage HAS the data
     },
     (error) => { // error
@@ -177,12 +171,10 @@ if(this.expRegdni.test(this.dniAutor)&&expNombreApellidos.test(this.nombreAutor)
        else if(this.opcionAutor=="modificar"){
          localStorage.setItem('existe', 'false');
        }
-
        
      this.accionAuthor() // <- localStorage HAS the data
     }
   );
-
 
 }else{
   alert("Asegurese de introducir bien todos los campos");
@@ -220,7 +212,6 @@ public accionAuthor(){
 
   if (localStorage.getItem('existe')=="true" && this.opcionAutor == "modificar"){
  
-
     this.userService.modificarAutor(this.dniAutor,JSONform)
     .subscribe(
     
@@ -244,13 +235,11 @@ public formularioAutoresJSON(elementos){
         var value = element.value;
 
         if(name){
-
             datos[name]=value;
         }
       }
   return datos;
 }
-
 
 public verLibro(isbn,nombre,autor){
 this.userService.getAutor(autor)
@@ -263,11 +252,9 @@ this.userService.getAutor(autor)
     
     );
 
-    
 }
 
 public crearDivLibro(isbn, nombre, autor){
-
 
 if(document.getElementById("infLibro") == undefined && document.getElementById("infLibro") == null){
   var mdiv = document.createElement("div");
@@ -286,7 +273,7 @@ if(document.getElementById("infLibro") == undefined && document.getElementById("
   cerrar.style.height = '30px';
   cerrar.style.width = '30px';
   cerrar.style.marginLeft = '470px';
-  
+
   mh1.append(infProd);
   parrafo.append(document.createTextNode("ISBN: "+isbn));
   parrafo2.append(document.createTextNode("Nombre: "+nombre));
@@ -298,16 +285,14 @@ if(document.getElementById("infLibro") == undefined && document.getElementById("
   mdiv.append(parrafo3);
   mdiv.setAttribute('id',"infLibro");
   mdiv.style.textAlign = "center";
-  mdiv.style.paddingBottom = "40px";
   mdiv.style.backgroundColor = "#CBCBCB";
-  mdiv.style.marginLeft = "40%";
-  mdiv.style.marginTop = "-10%";
+  mdiv.style.marginTop = "5%";
   mdiv.style.border = "2px solid black";
   mdiv.style.borderRadius = "6px";
   mdiv.style.position = "absolute";
   mdiv.style.width = "500px";
   mdiv.style.zIndex = "10";
-  document.body.append(mdiv);
+  document.getElementById("principal").append(mdiv);
 
   document.getElementById("xcerrar").addEventListener('click', function(event){
     this.parentElement.remove();
